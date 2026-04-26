@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free mortgage calculator with amortization schedule, PMI, taxes, and insurance. Calculate monthly payments and total loan cost.">
+    <meta name="keywords" content="mortgage calculator, home loan calculator, mortgage payment, amortization schedule">
+    <title>Mortgage Calculator - Free Home Loan Calculator with Amortization</title>
+    <!-- Google AdSense Verification -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8510922003408038"
+     crossorigin="anonymous"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        header {
+            text-align: center;
+            color: white;
+            padding: 40px 20px;
+        }
+        header h1 { font-size: 2.5em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+        header p { font-size: 1.2em; opacity: 0.9; }
+        .calculator-box {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            margin: 20px 0;
+        }
+        .input-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .input-group {
+            margin: 10px 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .input-prefix {
+            position: relative;
+        }
+        .input-prefix input {
+            padding-left: 30px;
+        }
+        .prefix {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 20px 0;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        .results {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 30px;
+            display: none;
+            border-left: 5px solid #667eea;
+        }
+        .results.show { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .payment-display {
+            font-size: 2.5em;
+            color: #667eea;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .payment-label {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .detail-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .detail-number {
+            font-size: 1.5em;
+            color: #667eea;
+            font-weight: bold;
+        }
+        .detail-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .amortization-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .amortization-table th, .amortization-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        .amortization-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #667eea;
+            position: sticky;
+            top: 0;
+        }
+        .amortization-table tr:hover {
+            background: #f8f9fa;
+        }
+        .ad-placeholder {
+            background: #e0e0e0;
+            border: 2px dashed #999;
+            padding: 100px 20px;
+            text-align: center;
+            margin: 40px 0;
+            border-radius: 8px;
+            color: #666;
+        }
+        .content-section {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        .content-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        .content-section p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+        .features-list {
+            list-style: none;
+            padding: 0;
+        }
+        .features-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .features-list li:before {
+            content: "✓ ";
+            color: #667eea;
+            font-weight: bold;
+        }
+        .competitor-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .competitor-box h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: white;
+            opacity: 0.8;
+        }
+        footer a { color: #ffd700; }
+        @media (max-width: 768px) {
+            header h1 { font-size: 2em; }
+            .payment-display { font-size: 1.8em; }
+            .calculator-box { padding: 20px; }
+        }
+        .slider-container {
+            margin: 15px 0;
+        }
+        input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Mortgage Calculator</h1>
+            <p>Calculate your monthly payment with taxes, insurance, and PMI</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="calculator-box">
+            <div class="input-row">
+                <div class="input-group">
+                    <label for="home-price">Home Price</label>
+                    <div class="input-prefix">
+                        <span class="prefix">$</span>
+                        <input type="number" id="home-price" placeholder="300000" value="300000">
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="down-payment">Down Payment</label>
+                    <div class="input-prefix">
+                        <span class="prefix">$</span>
+                        <input type="number" id="down-payment" placeholder="60000" value="60000">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-row">
+                <div class="input-group">
+                    <label for="interest-rate">Interest Rate (%)</label>
+                    <input type="number" id="interest-rate" step="0.01" placeholder="7.5" value="7.5">
+                </div>
+                
+                <div class="input-group">
+                    <label for="loan-term">Loan Term</label>
+                    <select id="loan-term">
+                        <option value="30">30 years</option>
+                        <option value="20">20 years</option>
+                        <option value="15">15 years</option>
+                        <option value="10">10 years</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="input-row">
+                <div class="input-group">
+                    <label for="property-tax">Annual Property Tax</label>
+                    <div class="input-prefix">
+                        <span class="prefix">$</span>
+                        <input type="number" id="property-tax" placeholder="3600" value="3600">
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="home-insurance">Annual Home Insurance</label>
+                    <div class="input-prefix">
+                        <span class="prefix">$</span>
+                        <input type="number" id="home-insurance" placeholder="1200" value="1200">
+                    </div>
+                </div>
+            </div>
+            
+            <button onclick="calculateMortgage()">Calculate Mortgage Payment</button>
+            
+            <div id="results" class="results">
+                <div class="payment-label">Estimated Monthly Payment</div>
+                <div class="payment-display" id="monthly-payment">$0</div>
+                
+                <div class="detail-grid">
+                    <div class="detail-box">
+                        <div class="detail-number" id="principal-interest">$0</div>
+                        <div class="detail-label">Principal & Interest</div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-number" id="tax-payment">$0</div>
+                        <div class="detail-label">Property Tax</div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-number" id="insurance-payment">$0</div>
+                        <div class="detail-label">Insurance</div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-number" id="pmi-payment">$0</div>
+                        <div class="detail-label">PMI</div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-number" id="total-interest">$0</div>
+                        <div class="detail-label">Total Interest</div>
+                    </div>
+                    <div class="detail-box">
+                        <div class="detail-number" id="total-cost">$0</div>
+                        <div class="detail-label">Total Loan Cost</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <h3 style="color: #667eea; margin-bottom: 15px;">Amortization Schedule</h3>
+                    <div style="overflow-x: auto;">
+                        <table class="amortization-table" id="amortization-table">
+                            <thead>
+                                <tr>
+                                    <th>Year</th>
+                                    <th>Interest</th>
+                                    <th>Principal</th>
+                                    <th>Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody id="amortization-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Affiliate Section -->
+        <div class="competitor-box">
+            <h4>Compare Mortgage Rates</h4>
+            <p>Get pre-approved and compare rates from multiple lenders. Check current rates to see how much you could save.</p>
+            <button style="background: #28a745; width: auto; padding: 12px 30px;">Get Personalized Rates</button>
+        </div>
+
+        <!-- Content Section -->
+        <div class="content-section">
+            <h2>How Our Mortgage Calculator Works</h2>
+            <p>Our free mortgage calculator helps you estimate your monthly payment by considering:</p>
+            
+            <ul class="features-list">
+                <li><strong>Home Price:</strong> The purchase price of the property</li>
+                <li><strong>Down Payment:</strong> Typically 10-20% of home price</li>
+                <li><strong>Interest Rate:</strong> Current market rates (varies by lender)</li>
+                <li><strong>Loan Term:</strong> 15 or 30 years most common</li>
+                <li><strong>Property Tax:</strong> Annual tax divided by 12</li>
+                <li><strong>Home Insurance:</strong> Required by lenders</li>
+                <li><strong>PMI:</strong> Private mortgage insurance if down payment < 20%</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>Why Use Our Calculator?</h2>
+            
+            <p><strong>Complete Picture:</strong> Unlike basic calculators, we include taxes, insurance, and PMI to show your true monthly cost.</p>
+            
+            <p><strong>Amortization Schedule:</strong> See how much goes to interest vs principal each year.</p>
+            
+            <p><strong>Private:</strong> No signup required. Your data stays on your device.</p>
+            
+            <p><strong>Accurate:</strong> Uses standard mortgage formulas for reliable estimates.</p>
+        </div>
+
+        <div class="ad-placeholder">
+            Advertisement Space
+            <br><br>
+            Google AdSense Ready
+        </div>
+    </div>
+
+    <!-- Phase 1: Refinance Calculator -->
+    <div class="container">
+        <div class="calculator-box">
+            <h2>🏠 Refinance Calculator</h2>
+            <p>Calculate if refinancing makes sense for you.</p>
+            
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Current Loan Balance</label>
+                    <div class="input-prefix">
+                        <span class="prefix">$</span>
+                        <input type="number" id="refi-current-balance" placeholder="250000">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Current Interest Rate (%)</label>
+                    <input type="number" id="refi-current-rate" placeholder="6.5" step="0.01">
+                </div>
+                <div class="input-group">
+                    <label>Current Monthly Payment</label>
+                    <div class="input-prefix">
+                        <span class="prefix">$</span>
+                        <input type="number" id="refi-current-payment" placeholder="1580">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-row">
+                <div class="input-group">
+                    <label>New Interest Rate (%)</label>
+                    <input type="number" id="refi-new-rate" placeholder="5.5" step="0.01">
+                </div>
+                <div class="input-group">
+                    <label>New Loan Term (years)</label>
+                    <select id="refi-new-term">
+                        <option value="30">30 years</option>
+                        <option value="20">20 years</option>
+                        <option value="15">15 years</option>
+                        <option value="10">10 years</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Closing Costs</label>
+                    <div class="input-prefix">
+                        <span class="prefix">$</span>
+                        <input type="number" id="refi-closing-costs" placeholder="5000">
+                    </div>
+                </div>
+            </div>
+            
+            <button onclick="calculateRefinance()">Calculate Refinance</button>
+            
+            <div id="refi-results" class="results">
+                <h3>Refinance Analysis</h3>
+                <div class="result-grid">
+                    <div class="result-item">
+                        <span class="result-label">New Monthly Payment:</span>
+                        <span class="result-value" id="refi-new-payment"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Monthly Savings:</span>
+                        <span class="result-value" id="refi-monthly-savings"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Break-Even Point:</span>
+                        <span class="result-value" id="refi-break-even"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Total Interest Saved:</span>
+                        <span class="result-value" id="refi-total-savings"></span>
+                    </div>
+                </div>
+                <p id="refi-recommendation" class="recommendation"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 1: Affordability Calculator -->
+    <div class="container">
+        <div class="calculator-box">
+            <h2>💰 Affordability Calculator</h2>
+            <p>How much house can you afford based on your monthly budget?</p>
+            
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Monthly Income (before taxes)</label>
+                    <div class="input-prefix">
+                        <span class="prefix">$</span>
+                        <input type="number" id="afford-income" placeholder="6000">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Monthly Debt Payments</label>
+                    <div class="input-prefix">
+                        <span class="prefix">$</span>
+                        <input type="number" id="afford-debt" placeholder="500">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Down Payment</label>
+                    <div class="input-prefix">
+                        <span class="prefix">$</span>
+                        <input type="number" id="afford-down-payment" placeholder="40000">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Interest Rate (%)</label>
+                    <input type="number" id="afford-rate" placeholder="6.5" step="0.01">
+                </div>
+                <div class="input-group">
+                    <label>Loan Term (years)</label>
+                    <select id="afford-term">
+                        <option value="30">30 years</option>
+                        <option value="20">20 years</option>
+                        <option value="15">15 years</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Property Tax Rate (%)</label>
+                    <input type="number" id="afford-tax-rate" placeholder="1.2" step="0.1">
+                </div>
+            </div>
+            
+            <button onclick="calculateAffordability()">Calculate Affordability</button>
+            
+            <div id="afford-results" class="results">
+                <h3>You Can Afford</h3>
+                <div class="result-grid">
+                    <div class="result-item highlight">
+                        <span class="result-label">Maximum Home Price:</span>
+                        <span class="result-value" id="afford-max-price"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Monthly Payment:</span>
+                        <span class="result-value" id="afford-monthly-payment"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Debt-to-Income Ratio:</span>
+                        <span class="result-value" id="afford-dti"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Loan Amount:</span>
+                        <span class="result-value" id="afford-loan-amount"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 1: Extra Payments Calculator -->
+    <div class="container">
+        <div class="calculator-box">
+            <h2>⚡ Extra Payments Calculator</h2>
+            <p>See how extra payments can save you money and time.</p>
+            
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Current Loan Balance</label>
+                    <div class="input-prefix">
+                        <span class="prefix">$</span>
+                        <input type="number" id="extra-balance" placeholder="250000">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Interest Rate (%)</label>
+                    <input type="number" id="extra-rate" placeholder="6.5" step="0.01">
+                </div>
+                <div class="input-group">
+                    <label>Monthly Payment</label>
+                    <div class="input-prefix">
+                        <span class="prefix">$</span>
+                        <input type="number" id="extra-payment" placeholder="1580">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Extra Monthly Payment</label>
+                    <div class="input-prefix">
+                        <span class="prefix">$</span>
+                        <input type="number" id="extra-amount" placeholder="200">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Years Remaining</label>
+                    <input type="number" id="extra-years-remaining" placeholder="25">
+                </div>
+                <div class="input-group">
+                    <label>One-time Extra Payment</label>
+                    <div class="input-prefix">
+                        <span class="prefix">$</span>
+                        <input type="number" id="extra-once" placeholder="5000">
+                    </div>
+                </div>
+            </div>
+            
+            <button onclick="calculateExtraPayments()">Calculate Savings</button>
+            
+            <div id="extra-results" class="results">
+                <h3>Extra Payment Impact</h3>
+                <div class="result-grid">
+                    <div class="result-item highlight">
+                        <span class="result-label">Interest Saved:</span>
+                        <span class="result-value" id="extra-interest-saved"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Time Saved:</span>
+                        <span class="result-value" id="extra-time-saved"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">New Payoff Date:</span>
+                        <span class="result-value" id="extra-new-date"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Total Cost:</span>
+                        <span class="result-value" id="extra-total-cost"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Mortgage Calculator. Free tool for home buyers.</p>
+            <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a> | <a href="#">Contact</a></p>
+        </div>
+    </footer>
+
+    <script>
+        function calculateMortgage() {
+            // Get inputs
+            const homePrice = parseFloat(document.getElementById('home-price').value) || 0;
+            const downPayment = parseFloat(document.getElementById('down-payment').value) || 0;
+            const interestRate = parseFloat(document.getElementById('interest-rate').value) || 0;
+            const loanTerm = parseInt(document.getElementById('loan-term').value) || 30;
+            const propertyTax = parseFloat(document.getElementById('property-tax').value) || 0;
+            const homeInsurance = parseFloat(document.getElementById('home-insurance').value) || 0;
+            
+            // Calculate loan amount
+            const loanAmount = homePrice - downPayment;
+            
+            // Calculate monthly interest rate
+            const monthlyRate = (interestRate / 100) / 12;
+            
+            // Calculate number of payments
+            const numberOfPayments = loanTerm * 12;
+            
+            // Calculate principal and interest
+            let principalAndInterest = 0;
+            if (interestRate > 0) {
+                principalAndInterest = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) / (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+            } else {
+                principalAndInterest = loanAmount / numberOfPayments;
+            }
+            
+            // Calculate monthly tax and insurance
+            const monthlyTax = propertyTax / 12;
+            const monthlyInsurance = homeInsurance / 12;
+            
+            // Calculate PMI (if down payment < 20%)
+            let monthlyPMI = 0;
+            const downPaymentPercent = downPayment / homePrice;
+            if (downPaymentPercent < 0.20) {
+                // PMI typically 0.3% to 1.2% of loan amount annually
+                monthlyPMI = (loanAmount * 0.005) / 12; // Using 0.5% as average
+            }
+            
+            // Total monthly payment
+            const totalMonthlyPayment = principalAndInterest + monthlyTax + monthlyInsurance + monthlyPMI;
+            
+            // Calculate total interest over loan life
+            const totalPayments = principalAndInterest * numberOfPayments;
+            const totalInterest = totalPayments - loanAmount;
+            const totalCost = totalPayments + monthlyTax * numberOfPayments + monthlyInsurance * numberOfPayments;
+            
+            // Display results
+            document.getElementById('monthly-payment').textContent = '$' + totalMonthlyPayment.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById('principal-interest').textContent = '$' + principalAndInterest.toFixed(0);
+            document.getElementById('tax-payment').textContent = '$' + monthlyTax.toFixed(0);
+            document.getElementById('insurance-payment').textContent = '$' + monthlyInsurance.toFixed(0);
+            document.getElementById('pmi-payment').textContent = '$' + monthlyPMI.toFixed(0);
+            document.getElementById('total-interest').textContent = '$' + totalInterest.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById('total-cost').textContent = '$' + totalCost.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            
+            // Generate amortization schedule
+            generateAmortizationSchedule(loanAmount, monthlyRate, numberOfPayments, principalAndInterest);
+            
+            // Show results
+            document.getElementById('results').classList.add('show');
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        function generateAmortizationSchedule(loanAmount, monthlyRate, numberOfPayments, monthlyPayment) {
+            const tbody = document.getElementById('amortization-body');
+            tbody.innerHTML = '';
+            
+            let balance = loanAmount;
+            let yearlyInterest = 0;
+            let yearlyPrincipal = 0;
+            let currentYear = 1;
+            
+            for (let month = 1; month <= numberOfPayments; month++) {
+                const interestPayment = balance * monthlyRate;
+                const principalPayment = monthlyPayment - interestPayment;
+                balance -= principalPayment;
+                
+                yearlyInterest += interestPayment;
+                yearlyPrincipal += principalPayment;
+                
+                // Add row at end of each year or last month
+                if (month % 12 === 0 || month === numberOfPayments) {
+                    const row = tbody.insertRow();
+                    row.insertCell(0).textContent = currentYear;
+                    row.insertCell(1).textContent = '$' + yearlyInterest.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                    row.insertCell(2).textContent = '$' + yearlyPrincipal.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                    row.insertCell(3).textContent = '$' + Math.max(0, balance).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                    
+                    yearlyInterest = 0;
+                    yearlyPrincipal = 0;
+                    currentYear++;
+                }
+            }
+        }
+
+        // Phase 1: Refinance Calculator
+        function calculateRefinance() {
+            const currentBalance = parseFloat(document.getElementById('refi-current-balance').value) || 0;
+            const currentRate = parseFloat(document.getElementById('refi-current-rate').value) || 0;
+            const currentPayment = parseFloat(document.getElementById('refi-current-payment').value) || 0;
+            const newRate = parseFloat(document.getElementById('refi-new-rate').value) || 0;
+            const newTerm = parseInt(document.getElementById('refi-new-term').value) || 30;
+            const closingCosts = parseFloat(document.getElementById('refi-closing-costs').value) || 0;
+
+            if (!currentBalance || !currentRate || !newRate) {
+                alert('Please fill in at least Current Balance, Current Rate, and New Rate');
+                return;
+            }
+
+            // Calculate current total interest remaining (simplified)
+            const currentMonthlyRate = currentRate / 100 / 12;
+            const newMonthlyRate = newRate / 100 / 12;
+            const numberOfPayments = newTerm * 12;
+
+            // Calculate new monthly payment
+            const newPayment = currentBalance * 
+                (newMonthlyRate * Math.pow(1 + newMonthlyRate, numberOfPayments)) / 
+                (Math.pow(1 + newMonthlyRate, numberOfPayments) - 1);
+
+            const monthlySavings = currentPayment - newPayment;
+            const breakEvenMonths = monthlySavings > 0 ? closingCosts / monthlySavings : 0;
+            
+            // Calculate total interest (simplified)
+            const totalNewInterest = (newPayment * numberOfPayments) - currentBalance;
+            
+            document.getElementById('refi-new-payment').textContent = '$' + newPayment.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById('refi-monthly-savings').textContent = '$' + monthlySavings.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '/mo';
+            document.getElementById('refi-break-even').textContent = breakEvenMonths > 0 ? Math.ceil(breakEvenMonths) + ' months' : 'N/A';
+            document.getElementById('refi-total-savings').textContent = '$' + (monthlySavings * numberOfPayments - closingCosts).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+            // Recommendation
+            const rec = document.getElementById('refi-recommendation');
+            if (monthlySavings > 100 && breakEvenMonths < 24) {
+                rec.textContent = '✅ Refinancing recommended - You\'ll save significantly and recover costs quickly.';
+                rec.className = 'recommendation positive';
+            } else if (monthlySavings > 0 && breakEvenMonths < 48) {
+                rec.textContent = '⚠️ Consider refinancing - Modest savings, review closing costs.';
+                rec.className = 'recommendation neutral';
+            } else {
+                rec.textContent = '❌ Refinancing not recommended - Costs outweigh benefits at current rates.';
+                rec.className = 'recommendation negative';
+            }
+
+            document.getElementById('refi-results').classList.add('show');
+        }
+
+        // Phase 1: Affordability Calculator
+        function calculateAffordability() {
+            const income = parseFloat(document.getElementById('afford-income').value) || 0;
+            const debt = parseFloat(document.getElementById('afford-debt').value) || 0;
+            const downPayment = parseFloat(document.getElementById('afford-down-payment').value) || 0;
+            const rate = parseFloat(document.getElementById('afford-rate').value) || 0;
+            const term = parseInt(document.getElementById('afford-term').value) || 30;
+            const taxRate = parseFloat(document.getElementById('afford-tax-rate').value) || 0;
+
+            if (!income) {
+                alert('Please enter your monthly income');
+                return;
+            }
+
+            // Calculate max monthly payment (28% front-end DTI)
+            const maxHousingPayment = income * 0.28;
+            
+            // Calculate max total debt payment (36% back-end DTI)
+            const maxTotalDebt = income * 0.36;
+            const maxForHousing = Math.min(maxHousingPayment, maxTotalDebt - debt);
+            
+            // Convert to loan amount
+            const monthlyRate = rate / 100 / 12;
+            const numberOfPayments = term * 12;
+            
+            // Calculate max loan (P = M * [(1+r)^n - 1] / [r(1+r)^n])
+            const maxLoan = maxForHousing * 
+                (Math.pow(1 + monthlyRate, numberOfPayments) - 1) / 
+                (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments));
+
+            const maxHomePrice = maxLoan + downPayment;
+            
+            // Calculate actual monthly breakdown
+            const estimatedTaxes = maxHomePrice * (taxRate / 100) / 12;
+            const estimatedInsurance = maxHomePrice * 0.0035 / 12; // ~0.35% annually
+            const principalInterest = maxForHousing - estimatedTaxes - estimatedInsurance;
+            
+            const dti = ((maxForHousing + debt) / income * 100).toFixed(1);
+
+            document.getElementById('afford-max-price').textContent = '$' + maxHomePrice.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById('afford-monthly-payment').textContent = '$' + maxForHousing.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '/mo';
+            document.getElementById('afford-dti').textContent = dti + '%';
+            document.getElementById('afford-loan-amount').textContent = '$' + maxLoan.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+            document.getElementById('afford-results').classList.add('show');
+        }
+
+        // Phase 1: Extra Payments Calculator
+        function calculateExtraPayments() {
+            const balance = parseFloat(document.getElementById('extra-balance').value) || 0;
+            const rate = parseFloat(document.getElementById('extra-rate').value) || 0;
+            const monthlyPayment = parseFloat(document.getElementById('extra-payment').value) || 0;
+            const extraMonthly = parseFloat(document.getElementById('extra-amount').value) || 0;
+            const yearsRemaining = parseInt(document.getElementById('extra-years-remaining').value) || 25;
+            const extraOnce = parseFloat(document.getElementById('extra-once').value) || 0;
+
+            if (!balance || !rate || !monthlyPayment) {
+                alert('Please fill in Balance, Rate, and Monthly Payment');
+                return;
+            }
+
+            const monthlyRate = rate / 100 / 12;
+            const totalMonths = yearsRemaining * 12;
+            
+            // Calculate standard payoff
+            let standardBalance = balance;
+            let standardInterest = 0;
+            for (let i = 0; i < totalMonths && standardBalance > 0; i++) {
+                const interest = standardBalance * monthlyRate;
+                standardInterest += interest;
+                const principal = monthlyPayment - interest;
+                standardBalance -= principal;
+            }
+
+            // Calculate with extra payments
+            let newBalance = balance - extraOnce;
+            let newInterest = 0;
+            let monthsSaved = 0;
+            const newPayment = monthlyPayment + extraMonthly;
+            
+            for (let i = 0; i < totalMonths && newBalance > 0; i++) {
+                const interest = newBalance * monthlyRate;
+                newInterest += interest;
+                const principal = newPayment - interest;
+                newBalance -= principal;
+                if (newBalance <= 0) {
+                    monthsSaved = totalMonths - i - 1;
+                    break;
+                }
+            }
+
+            const interestSaved = standardInterest - newInterest;
+            const payoffDate = new Date();
+            payoffDate.setMonth(payoffDate.getMonth() + (totalMonths - monthsSaved));
+
+            document.getElementById('extra-interest-saved').textContent = '$' + interestSaved.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById('extra-time-saved').textContent = Math.floor(monthsSaved / 12) + ' years ' + (monthsSaved % 12) + ' months';
+            document.getElementById('extra-new-date').textContent = payoffDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+            document.getElementById('extra-total-cost').textContent = '$' + (balance + newInterest).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+            document.getElementById('extra-results').classList.add('show');
+        }
+    </script>
+</body>
+</html>
