@@ -392,6 +392,232 @@
         </div>
     </div>
 
+    <!-- Phase 1: Refinance Calculator -->
+    <div class="container">
+        <div class="calculator-box">
+            <h2>🏠 Refinance Calculator</h2>
+            <p>Calculate if refinancing makes sense for you.</p>
+            
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Current Loan Balance</label>
+                    <div class="input-prefix">
+                        <span class="prefix">$</span>
+                        <input type="number" id="refi-current-balance" placeholder="250000">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Current Interest Rate (%)</label>
+                    <input type="number" id="refi-current-rate" placeholder="6.5" step="0.01">
+                </div>
+                <div class="input-group">
+                    <label>Current Monthly Payment</label>
+                    <div class="input-prefix">
+                        <span class="prefix">$</span>
+                        <input type="number" id="refi-current-payment" placeholder="1580">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-row">
+                <div class="input-group">
+                    <label>New Interest Rate (%)</label>
+                    <input type="number" id="refi-new-rate" placeholder="5.5" step="0.01">
+                </div>
+                <div class="input-group">
+                    <label>New Loan Term (years)</label>
+                    <select id="refi-new-term">
+                        <option value="30">30 years</option>
+                        <option value="20">20 years</option>
+                        <option value="15">15 years</option>
+                        <option value="10">10 years</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Closing Costs</label>
+                    <div class="input-prefix">
+                        <span class="prefix">$</span>
+                        <input type="number" id="refi-closing-costs" placeholder="5000">
+                    </div>
+                </div>
+            </div>
+            
+            <button onclick="calculateRefinance()">Calculate Refinance</button>
+            
+            <div id="refi-results" class="results">
+                <h3>Refinance Analysis</h3>
+                <div class="result-grid">
+                    <div class="result-item">
+                        <span class="result-label">New Monthly Payment:</span>
+                        <span class="result-value" id="refi-new-payment"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Monthly Savings:</span>
+                        <span class="result-value" id="refi-monthly-savings"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Break-Even Point:</span>
+                        <span class="result-value" id="refi-break-even"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Total Interest Saved:</span>
+                        <span class="result-value" id="refi-total-savings"></span>
+                    </div>
+                </div>
+                <p id="refi-recommendation" class="recommendation"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 1: Affordability Calculator -->
+    <div class="container">
+        <div class="calculator-box">
+            <h2>💰 Affordability Calculator</h2>
+            <p>How much house can you afford based on your monthly budget?</p>
+            
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Monthly Income (before taxes)</label>
+                    <div class="input-prefix">
+                        <span class="prefix">$</span>
+                        <input type="number" id="afford-income" placeholder="6000">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Monthly Debt Payments</label>
+                    <div class="input-prefix">
+                        <span class="prefix">$</span>
+                        <input type="number" id="afford-debt" placeholder="500">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Down Payment</label>
+                    <div class="input-prefix">
+                        <span class="prefix">$</span>
+                        <input type="number" id="afford-down-payment" placeholder="40000">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Interest Rate (%)</label>
+                    <input type="number" id="afford-rate" placeholder="6.5" step="0.01">
+                </div>
+                <div class="input-group">
+                    <label>Loan Term (years)</label>
+                    <select id="afford-term">
+                        <option value="30">30 years</option>
+                        <option value="20">20 years</option>
+                        <option value="15">15 years</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Property Tax Rate (%)</label>
+                    <input type="number" id="afford-tax-rate" placeholder="1.2" step="0.1">
+                </div>
+            </div>
+            
+            <button onclick="calculateAffordability()">Calculate Affordability</button>
+            
+            <div id="afford-results" class="results">
+                <h3>You Can Afford</h3>
+                <div class="result-grid">
+                    <div class="result-item highlight">
+                        <span class="result-label">Maximum Home Price:</span>
+                        <span class="result-value" id="afford-max-price"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Monthly Payment:</span>
+                        <span class="result-value" id="afford-monthly-payment"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Debt-to-Income Ratio:</span>
+                        <span class="result-value" id="afford-dti"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Loan Amount:</span>
+                        <span class="result-value" id="afford-loan-amount"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 1: Extra Payments Calculator -->
+    <div class="container">
+        <div class="calculator-box">
+            <h2>⚡ Extra Payments Calculator</h2>
+            <p>See how extra payments can save you money and time.</p>
+            
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Current Loan Balance</label>
+                    <div class="input-prefix">
+                        <span class="prefix">$</span>
+                        <input type="number" id="extra-balance" placeholder="250000">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Interest Rate (%)</label>
+                    <input type="number" id="extra-rate" placeholder="6.5" step="0.01">
+                </div>
+                <div class="input-group">
+                    <label>Monthly Payment</label>
+                    <div class="input-prefix">
+                        <span class="prefix">$</span>
+                        <input type="number" id="extra-payment" placeholder="1580">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Extra Monthly Payment</label>
+                    <div class="input-prefix">
+                        <span class="prefix">$</span>
+                        <input type="number" id="extra-amount" placeholder="200">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Years Remaining</label>
+                    <input type="number" id="extra-years-remaining" placeholder="25">
+                </div>
+                <div class="input-group">
+                    <label>One-time Extra Payment</label>
+                    <div class="input-prefix">
+                        <span class="prefix">$</span>
+                        <input type="number" id="extra-once" placeholder="5000">
+                    </div>
+                </div>
+            </div>
+            
+            <button onclick="calculateExtraPayments()">Calculate Savings</button>
+            
+            <div id="extra-results" class="results">
+                <h3>Extra Payment Impact</h3>
+                <div class="result-grid">
+                    <div class="result-item highlight">
+                        <span class="result-label">Interest Saved:</span>
+                        <span class="result-value" id="extra-interest-saved"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Time Saved:</span>
+                        <span class="result-value" id="extra-time-saved"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">New Payoff Date:</span>
+                        <span class="result-value" id="extra-new-date"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Total Cost:</span>
+                        <span class="result-value" id="extra-total-cost"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <div class="container">
             <p>&copy; 2026 Mortgage Calculator. Free tool for home buyers.</p>
@@ -493,6 +719,160 @@
                     currentYear++;
                 }
             }
+        }
+
+        // Phase 1: Refinance Calculator
+        function calculateRefinance() {
+            const currentBalance = parseFloat(document.getElementById('refi-current-balance').value) || 0;
+            const currentRate = parseFloat(document.getElementById('refi-current-rate').value) || 0;
+            const currentPayment = parseFloat(document.getElementById('refi-current-payment').value) || 0;
+            const newRate = parseFloat(document.getElementById('refi-new-rate').value) || 0;
+            const newTerm = parseInt(document.getElementById('refi-new-term').value) || 30;
+            const closingCosts = parseFloat(document.getElementById('refi-closing-costs').value) || 0;
+
+            if (!currentBalance || !currentRate || !newRate) {
+                alert('Please fill in at least Current Balance, Current Rate, and New Rate');
+                return;
+            }
+
+            // Calculate current total interest remaining (simplified)
+            const currentMonthlyRate = currentRate / 100 / 12;
+            const newMonthlyRate = newRate / 100 / 12;
+            const numberOfPayments = newTerm * 12;
+
+            // Calculate new monthly payment
+            const newPayment = currentBalance * 
+                (newMonthlyRate * Math.pow(1 + newMonthlyRate, numberOfPayments)) / 
+                (Math.pow(1 + newMonthlyRate, numberOfPayments) - 1);
+
+            const monthlySavings = currentPayment - newPayment;
+            const breakEvenMonths = monthlySavings > 0 ? closingCosts / monthlySavings : 0;
+            
+            // Calculate total interest (simplified)
+            const totalNewInterest = (newPayment * numberOfPayments) - currentBalance;
+            
+            document.getElementById('refi-new-payment').textContent = '$' + newPayment.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById('refi-monthly-savings').textContent = '$' + monthlySavings.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '/mo';
+            document.getElementById('refi-break-even').textContent = breakEvenMonths > 0 ? Math.ceil(breakEvenMonths) + ' months' : 'N/A';
+            document.getElementById('refi-total-savings').textContent = '$' + (monthlySavings * numberOfPayments - closingCosts).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+            // Recommendation
+            const rec = document.getElementById('refi-recommendation');
+            if (monthlySavings > 100 && breakEvenMonths < 24) {
+                rec.textContent = '✅ Refinancing recommended - You\'ll save significantly and recover costs quickly.';
+                rec.className = 'recommendation positive';
+            } else if (monthlySavings > 0 && breakEvenMonths < 48) {
+                rec.textContent = '⚠️ Consider refinancing - Modest savings, review closing costs.';
+                rec.className = 'recommendation neutral';
+            } else {
+                rec.textContent = '❌ Refinancing not recommended - Costs outweigh benefits at current rates.';
+                rec.className = 'recommendation negative';
+            }
+
+            document.getElementById('refi-results').classList.add('show');
+        }
+
+        // Phase 1: Affordability Calculator
+        function calculateAffordability() {
+            const income = parseFloat(document.getElementById('afford-income').value) || 0;
+            const debt = parseFloat(document.getElementById('afford-debt').value) || 0;
+            const downPayment = parseFloat(document.getElementById('afford-down-payment').value) || 0;
+            const rate = parseFloat(document.getElementById('afford-rate').value) || 0;
+            const term = parseInt(document.getElementById('afford-term').value) || 30;
+            const taxRate = parseFloat(document.getElementById('afford-tax-rate').value) || 0;
+
+            if (!income) {
+                alert('Please enter your monthly income');
+                return;
+            }
+
+            // Calculate max monthly payment (28% front-end DTI)
+            const maxHousingPayment = income * 0.28;
+            
+            // Calculate max total debt payment (36% back-end DTI)
+            const maxTotalDebt = income * 0.36;
+            const maxForHousing = Math.min(maxHousingPayment, maxTotalDebt - debt);
+            
+            // Convert to loan amount
+            const monthlyRate = rate / 100 / 12;
+            const numberOfPayments = term * 12;
+            
+            // Calculate max loan (P = M * [(1+r)^n - 1] / [r(1+r)^n])
+            const maxLoan = maxForHousing * 
+                (Math.pow(1 + monthlyRate, numberOfPayments) - 1) / 
+                (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments));
+
+            const maxHomePrice = maxLoan + downPayment;
+            
+            // Calculate actual monthly breakdown
+            const estimatedTaxes = maxHomePrice * (taxRate / 100) / 12;
+            const estimatedInsurance = maxHomePrice * 0.0035 / 12; // ~0.35% annually
+            const principalInterest = maxForHousing - estimatedTaxes - estimatedInsurance;
+            
+            const dti = ((maxForHousing + debt) / income * 100).toFixed(1);
+
+            document.getElementById('afford-max-price').textContent = '$' + maxHomePrice.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById('afford-monthly-payment').textContent = '$' + maxForHousing.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '/mo';
+            document.getElementById('afford-dti').textContent = dti + '%';
+            document.getElementById('afford-loan-amount').textContent = '$' + maxLoan.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+            document.getElementById('afford-results').classList.add('show');
+        }
+
+        // Phase 1: Extra Payments Calculator
+        function calculateExtraPayments() {
+            const balance = parseFloat(document.getElementById('extra-balance').value) || 0;
+            const rate = parseFloat(document.getElementById('extra-rate').value) || 0;
+            const monthlyPayment = parseFloat(document.getElementById('extra-payment').value) || 0;
+            const extraMonthly = parseFloat(document.getElementById('extra-amount').value) || 0;
+            const yearsRemaining = parseInt(document.getElementById('extra-years-remaining').value) || 25;
+            const extraOnce = parseFloat(document.getElementById('extra-once').value) || 0;
+
+            if (!balance || !rate || !monthlyPayment) {
+                alert('Please fill in Balance, Rate, and Monthly Payment');
+                return;
+            }
+
+            const monthlyRate = rate / 100 / 12;
+            const totalMonths = yearsRemaining * 12;
+            
+            // Calculate standard payoff
+            let standardBalance = balance;
+            let standardInterest = 0;
+            for (let i = 0; i < totalMonths && standardBalance > 0; i++) {
+                const interest = standardBalance * monthlyRate;
+                standardInterest += interest;
+                const principal = monthlyPayment - interest;
+                standardBalance -= principal;
+            }
+
+            // Calculate with extra payments
+            let newBalance = balance - extraOnce;
+            let newInterest = 0;
+            let monthsSaved = 0;
+            const newPayment = monthlyPayment + extraMonthly;
+            
+            for (let i = 0; i < totalMonths && newBalance > 0; i++) {
+                const interest = newBalance * monthlyRate;
+                newInterest += interest;
+                const principal = newPayment - interest;
+                newBalance -= principal;
+                if (newBalance <= 0) {
+                    monthsSaved = totalMonths - i - 1;
+                    break;
+                }
+            }
+
+            const interestSaved = standardInterest - newInterest;
+            const payoffDate = new Date();
+            payoffDate.setMonth(payoffDate.getMonth() + (totalMonths - monthsSaved));
+
+            document.getElementById('extra-interest-saved').textContent = '$' + interestSaved.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById('extra-time-saved').textContent = Math.floor(monthsSaved / 12) + ' years ' + (monthsSaved % 12) + ' months';
+            document.getElementById('extra-new-date').textContent = payoffDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+            document.getElementById('extra-total-cost').textContent = '$' + (balance + newInterest).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+            document.getElementById('extra-results').classList.add('show');
         }
     </script>
 </body>
