@@ -230,6 +230,20 @@
             font-size: 0.85em;
             color: #666;
         }
+        /* sitewide navigation */
+        .nav-links { display: flex; justify-content: center; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+        .nav-links a { color: white; text-decoration: none; padding: 10px 18px;
+            border: 2px solid rgba(255,255,255,0.3); border-radius: 30px; transition: all .3s; font-size: .93em; }
+        .nav-links a:hover { background: rgba(255,255,255,0.2); border-color: white; }
+        .nav-links a.here { background: rgba(255,255,255,0.22); border-color: white; font-weight: 600; }
+        .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap: 18px; margin-top: 20px; }
+        .guide-card { display:block; background:#f8f9fa; border-radius:12px; padding:22px; text-decoration:none;
+            color:inherit; transition: transform .2s, box-shadow .2s; }
+        .guide-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.1); }
+        .guide-card h3 { color:#667eea; margin-bottom:8px; font-size:1.08em; }
+        .guide-card p { color:#666; font-size:.92em; margin:0; }
+        .guide-card .more { display:inline-block; margin-top:10px; color:#667eea; font-weight:600; font-size:.88em; }
+        @media (max-width: 600px) { .nav-links { gap:9px; } .nav-links a { padding:8px 14px; font-size:.86em; } }
     </style>
 </head>
 <body>
@@ -237,6 +251,13 @@
         <div class="container">
             <h1>Mortgage Calculator</h1>
             <p>Calculate your monthly payment with taxes, insurance, and PMI</p>
+            <div class="nav-links">
+                <a href="/" class="here">Calculator</a>
+                <a href="/how-payments-work.html">How Payments Work</a>
+                <a href="/mortgage-rates.html">Getting a Better Rate</a>
+                <a href="/faq.html">FAQ</a>
+                <a href="/about.html">About</a>
+            </div>
         </div>
     </header>
 
@@ -634,10 +655,42 @@
         </div>
     </div>
 
+
+    <div class="container">
+        <div class="content-section" style="background:white;border-radius:20px;padding:30px;box-shadow:0 20px 60px rgba(0,0,0,.3);margin-bottom:30px;">
+            <h2>Guides</h2>
+            <p style="color:#555;">The calculator gives you a number. These explain what to do with it.</p>
+            <div class="guide-grid">
+                <a class="guide-card" href="/how-payments-work.html">
+                    <h3>How mortgage payments work</h3>
+                    <p>PITI, the costs calculators omit, and why amortisation means early payments barely touch the balance.</p>
+                    <span class="more">Read the guide &rarr;</span>
+                </a>
+                <a class="guide-card" href="/mortgage-rates.html">
+                    <h3>Getting a better rate</h3>
+                    <p>What lenders actually price on, why comparing several matters most, and how to read a Loan Estimate.</p>
+                    <span class="more">Read the guide &rarr;</span>
+                </a>
+                <a class="guide-card" href="/faq.html">
+                    <h3>Frequently asked questions</h3>
+                    <p>Affordability, points, refinancing, PMI, extra payments and 15- versus 30-year terms.</p>
+                    <span class="more">Read the guide &rarr;</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <div class="container">
-            <p>&copy; 2026 Mortgage Calculator. Free tool for home buyers.</p>
-            <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a> | <a href="#">Contact</a></p>
+            <p>&copy; 2026 Mortgage Calculator &middot; Published by M4Quick Studios LLC</p>
+            <p style="margin-top:12px;">
+                <a href="/about.html">About</a> |
+                <a href="/contact.html">Contact</a> |
+                <a href="/privacy.html">Privacy Policy</a> |
+                <a href="/cookies.html">Cookies</a> |
+                <a href="/terms.html">Terms of Use</a>
+            </p>
+            <p style="font-size:.85em;margin-top:16px;opacity:.85;max-width:760px;margin-left:auto;margin-right:auto;line-height:1.7;"><strong>Financial disclaimer:</strong> This site publishes general educational information only and does not provide financial, mortgage, tax or legal advice. We are not a lender, broker or licensed financial adviser. Estimates are illustrative and are not loan offers or pre-qualifications. Always consult a qualified professional about your own circumstances.</p>
         </div>
     </footer>
 
